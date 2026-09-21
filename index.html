@@ -35,7 +35,7 @@
 
             <div class="form-grid">
               <div class="field-group">
-                <label for="oldQuotaNumber">Cuota hipoteca actual (€/mes)</label>
+                <label for="oldQuotaNumber">Cuota hipoteca actual (€/mes) <details class="help"><summary aria-label="Información sobre la cuota hipotecaria actual">?</summary><div class="help-text">Es la cuota que pagas hoy por la hipoteca actual. Puedes obtenerla en el recibo bancario o en el cuadro de amortización.</div></details></label>
                 <div class="control-row">
                   <input id="oldQuotaRange" class="range-input" type="range" min="0" max="3000" step="10" value="890" data-key="oldQuota" aria-labelledby="oldQuotaLabel">
                   <label id="oldQuotaLabel" class="sr-only" for="oldQuotaNumber">Cuota hipoteca actual en euros al mes</label>
@@ -45,7 +45,7 @@
               </div>
 
               <div class="field-group">
-                <label for="origPriceNumber">Precio compra original (€)</label>
+                <label for="origPriceNumber">Precio compra original (€) <details class="help"><summary aria-label="Información sobre el precio de compra original">?</summary><div class="help-text">Es el precio por el que compraste la vivienda actual. El modelo lo usa como punto de partida para estimar la ganancia de la venta.</div></details></label>
                 <div class="control-row">
                   <input id="origPriceRange" class="range-input" type="range" min="100000" max="500000" step="1000" value="270000" data-key="origPrice" aria-labelledby="origPriceLabel">
                   <label id="origPriceLabel" class="sr-only" for="origPriceNumber">Precio de compra original en euros</label>
@@ -55,7 +55,7 @@
               </div>
 
               <div class="field-group">
-                <label for="pendMortgageNumber">Hipoteca pendiente (€)</label>
+                <label for="pendMortgageNumber">Hipoteca pendiente (€) <details class="help"><summary aria-label="Información sobre la hipoteca pendiente">?</summary><div class="help-text">Es el capital que todavía debes del préstamo actual. Pídeselo al banco como certificado de deuda o capital pendiente.</div></details></label>
                 <div class="control-row">
                   <input id="pendMortgageRange" class="range-input" type="range" min="0" max="400000" step="1000" value="240000" data-key="pendMortgage" aria-labelledby="pendMortgageLabel">
                   <label id="pendMortgageLabel" class="sr-only" for="pendMortgageNumber">Hipoteca pendiente en euros</label>
@@ -75,7 +75,7 @@
               </div>
 
               <div class="field-group">
-                <label for="agencyFeeNumber">Comisión inmobiliaria (%)</label>
+                <label for="agencyFeeNumber">Comisión inmobiliaria (%) <details class="help"><summary aria-label="Información sobre la comisión inmobiliaria">?</summary><div class="help-text">Es el porcentaje que pagarás a la agencia sobre el precio de venta. Déjalo en 0 % si no hay comisión.</div></details></label>
                 <div class="control-row">
                   <input id="agencyFeeRange" class="range-input" type="range" min="0" max="10" step="0.1" value="0" data-key="agencyFee" aria-labelledby="agencyFeeLabel">
                   <label id="agencyFeeLabel" class="sr-only" for="agencyFeeNumber">Comisión inmobiliaria en porcentaje</label>
@@ -106,8 +106,8 @@
 
             <div class="notice">
               <div>
-                <p class="notice-title">Supuesto de exención de IRPF por reinversión</p>
-                <p class="notice-copy">Marcado = no se incorpora IRPF al modelo. La herramienta no verifica por sí sola la elegibilidad ni calcula una exención parcial.</p>
+                <p class="notice-title">Supuesto de exención de IRPF por reinversión <details class="help help-irpf"><summary aria-label="Información sobre la exención de IRPF por reinversión">?</summary><div class="help-text">Marca el supuesto solo si esperas cumplir los requisitos de exención por reinversión. El modelo la trata como exención total y no comprueba si existe una exención parcial.</div></details></p>
+                <p class="notice-copy">Marcado = no se incorpora IRPF al modelo. Actívalo solo si consideras que cumples la exención por reinversión; la herramienta no verifica la elegibilidad ni calcula una exención parcial.</p>
               </div>
               <label class="switch" for="irpfToggle">
                 <input id="irpfToggle" type="checkbox" checked aria-describedby="irpfToggleHelp">
@@ -119,7 +119,7 @@
 
             <div class="form-grid">
               <div class="field-group">
-                <label for="yearsOwnedNumber">Años en propiedad (tenencia) <details class="help"><summary aria-label="Información sobre años de tenencia">?</summary><div class="help-text">Se utilizan años completos transcurridos. Para el método objetivo de referencia, 20 años o más se agrupan en el último tramo.</div></details></label>
+                <label for="yearsOwnedNumber">Años en propiedad (tenencia) <details class="help"><summary aria-label="Información sobre años de tenencia">?</summary><div class="help-text">Indica los años completos desde la compra de la vivienda actual; puedes comprobar las fechas en la escritura de compraventa. El modelo agrupa 20 años o más en su último tramo de referencia.</div></details></label>
                 <div class="control-row">
                   <input id="yearsOwnedRange" class="range-input" type="range" min="0" max="30" step="1" value="2" data-key="yearsOwned" aria-labelledby="yearsOwnedLabel">
                   <label id="yearsOwnedLabel" class="sr-only" for="yearsOwnedNumber">Años completos de tenencia</label>
@@ -130,7 +130,7 @@
               </div>
 
               <div class="field-group">
-                <label for="cadastralTotalNumber">Valor catastral total (€) <details class="help"><summary aria-label="Información sobre valor catastral">?</summary><div class="help-text">Valor catastral total del inmueble. Para la plusvalía real se necesita también el porcentaje de suelo.</div></details></label>
+                <label for="cadastralTotalNumber">Valor catastral total (€) <details class="help"><summary aria-label="Información sobre valor catastral">?</summary><div class="help-text">Consulta el valor catastral total en el recibo del IBI o en la información de Catastro. No lo confundas con la tasación ni con el valor de referencia.</div></details></label>
                 <div class="control-row">
                   <input id="cadastralTotalRange" class="range-input" type="range" min="20000" max="300000" step="10" value="90655.10" data-key="cadastralTotal" aria-labelledby="cadastralTotalLabel">
                   <label id="cadastralTotalLabel" class="sr-only" for="cadastralTotalNumber">Valor catastral total en euros</label>
@@ -140,7 +140,7 @@
               </div>
 
               <div class="field-group">
-                <label for="landPctNumber">Porcentaje de suelo (%) <details class="help"><summary aria-label="Información sobre porcentaje de suelo">?</summary><div class="help-text">Porcentaje del valor catastral total correspondiente al terreno, según los datos catastrales disponibles.</div></details></label>
+                <label for="landPctNumber">Porcentaje de suelo (%) <details class="help"><summary aria-label="Información sobre porcentaje de suelo">?</summary><div class="help-text">Busca en Catastro el valor del suelo y el valor catastral total; este dato es suelo / total × 100. La herramienta necesita ese porcentaje para estimar la base de la plusvalía.</div></details></label>
                 <div class="control-row">
                   <input id="landPctRange" class="range-input" type="range" min="10" max="90" step="0.01" value="40.58" data-key="landPct" aria-labelledby="landPctLabel">
                   <label id="landPctLabel" class="sr-only" for="landPctNumber">Porcentaje de suelo</label>
@@ -150,13 +150,13 @@
               </div>
 
               <div class="field-group">
-                <label for="plusvaliaRateNumber">Tipo impositivo IIVTNU (%) <details class="help"><summary aria-label="Información sobre tipo impositivo municipal">?</summary><div class="help-text">Debe coincidir con la ordenanza municipal vigente en el año de la transmisión. No se presupone un tipo concreto por municipio.</div></details></label>
+                <label for="plusvaliaRateNumber">Tipo impositivo IIVTNU (%) <details class="help"><summary aria-label="Información sobre tipo impositivo municipal">?</summary><div class="help-text">En Leganés, consulta la Ordenanza Fiscal del IIVTNU vigente en el Ayuntamiento. En otro municipio, busca “IIVTNU [municipio] ordenanza fiscal 2026” y usa el tipo aplicable a tu transmisión; no confundas el tipo con los coeficientes del impuesto.</div></details></label>
                 <div class="control-row">
                   <input id="plusvaliaRateRange" class="range-input" type="range" min="0" max="30" step="0.1" value="29" data-key="plusvaliaRate" aria-labelledby="plusvaliaRateLabel">
                   <label id="plusvaliaRateLabel" class="sr-only" for="plusvaliaRateNumber">Tipo impositivo del impuesto sobre el incremento del valor de los terrenos en porcentaje</label>
                   <input id="plusvaliaRateNumber" class="number-input" type="number" min="0" max="30" step="0.1" value="29" data-key="plusvaliaRate" inputmode="decimal">
                 </div>
-                <p class="field-help">El valor inicial es solo un dato de ejemplo; comprueba siempre la ordenanza local.</p>
+                <p class="field-help">Dato inicial de ejemplo. Comprueba siempre la ordenanza municipal vigente; en Leganés puedes consultarla en “Ordenanzas Fiscales”.</p>
                 <p class="field-error" id="plusvaliaRateError" role="alert"></p>
               </div>
             </div>
@@ -172,7 +172,7 @@
 
             <div class="form-grid">
               <div class="field-group">
-                <label for="buyPriceNumber">Precio objetivo (€)</label>
+                <label for="buyPriceNumber">Precio objetivo (€) <details class="help"><summary aria-label="Información sobre el precio objetivo de compra">?</summary><div class="help-text">Es el precio que prevés pagar por la nueva vivienda. El modelo lo utiliza también como base para sus estimaciones de ITP, gastos y financiación.</div></details></label>
                 <div class="control-row">
                   <input id="buyPriceRange" class="range-input" type="range" min="200000" max="1000000" step="5000" value="495000" data-key="buyPrice" aria-labelledby="buyPriceLabel">
                   <label id="buyPriceLabel" class="sr-only" for="buyPriceNumber">Precio objetivo de compra en euros</label>
@@ -182,7 +182,7 @@
               </div>
 
               <div class="field-group">
-                <label for="appraisalPriceNumber" class="accent-label">Valor tasación estimado (€)</label>
+                <label for="appraisalPriceNumber" class="accent-label">Valor tasación estimado (€) <details class="help"><summary aria-label="Información sobre la tasación">?</summary><div class="help-text">Introduce la tasación que te facilite el banco o una sociedad de tasación. En este modelo, el límite por LTV toma como referencia el menor entre precio de compra y tasación.</div></details></label>
                 <div class="control-row">
                   <input id="appraisalPriceRange" class="range-input" type="range" min="200000" max="1000000" step="5000" value="495000" data-key="appraisalPrice" aria-labelledby="appraisalPriceLabel">
                   <label id="appraisalPriceLabel" class="sr-only" for="appraisalPriceNumber">Valor estimado de tasación en euros</label>
@@ -192,7 +192,7 @@
               </div>
 
               <div class="field-group">
-                <label for="buyItpNumber">Impuesto (ITP) (%) <details class="help"><summary aria-label="Información sobre ITP">?</summary><div class="help-text">Introduce el tipo aplicable a tu operación. En una vivienda usada depende de la comunidad autónoma y de las circunstancias del adquirente y del inmueble.</div></details></label>
+                <label for="buyItpNumber">Impuesto (ITP) (%) <details class="help"><summary aria-label="Información sobre ITP">?</summary><div class="help-text">En una vivienda usada, busca el tipo vigente en la web tributaria de tu comunidad autónoma. Para Leganés, consulta la Comunidad de Madrid; el tipo general actual es 6 %, aunque existen supuestos especiales, y la base fiscal puede no coincidir con el precio de compra.</div></details></label>
                 <div class="control-row">
                   <input id="buyItpRange" class="range-input" type="range" min="0" max="12" step="0.1" value="6" data-key="buyItp" aria-labelledby="buyItpLabel">
                   <label id="buyItpLabel" class="sr-only" for="buyItpNumber">Tipo de ITP en porcentaje</label>
@@ -202,7 +202,7 @@
               </div>
 
               <div class="field-group">
-                <label for="buyNotaryNumber">Notaría y gestoría (%)</label>
+                <label for="buyNotaryNumber">Notaría y gestoría (%) <details class="help"><summary aria-label="Información sobre notaría y gestoría">?</summary><div class="help-text">Es una estimación de estos gastos expresada como porcentaje del precio de compra. Si tienes presupuestos reales, usa esos importes como referencia.</div></details></label>
                 <div class="control-row">
                   <input id="buyNotaryRange" class="range-input" type="range" min="0" max="4" step="0.1" value="1.5" data-key="buyNotary" aria-labelledby="buyNotaryLabel">
                   <label id="buyNotaryLabel" class="sr-only" for="buyNotaryNumber">Notaría y gestoría en porcentaje del precio de compra</label>
@@ -212,7 +212,7 @@
               </div>
 
               <div class="field-group">
-                <label for="buyReformNumber">Reforma (€)</label>
+                <label for="buyReformNumber">Reforma (€) <details class="help"><summary aria-label="Información sobre la reforma">?</summary><div class="help-text">Introduce el coste que prevés destinar a reformas de la nueva vivienda. Es un gasto adicional que el modelo suma a la necesidad total de compra.</div></details></label>
                 <div class="control-row">
                   <input id="buyReformRange" class="range-input" type="range" min="0" max="150000" step="1000" value="15000" data-key="buyReform" aria-labelledby="buyReformLabel">
                   <label id="buyReformLabel" class="sr-only" for="buyReformNumber">Coste de reforma en euros</label>
@@ -222,7 +222,7 @@
               </div>
 
               <div class="field-group">
-                <label for="buyExtraNumber">Otros gastos extra (€)</label>
+                <label for="buyExtraNumber">Otros gastos extra (€) <details class="help"><summary aria-label="Información sobre otros gastos extra">?</summary><div class="help-text">Aquí puedes incluir otros desembolsos de la operación que quieras tener en cuenta. El modelo los suma directamente a la necesidad total.</div></details></label>
                 <div class="control-row">
                   <input id="buyExtraRange" class="range-input" type="range" min="0" max="20000" step="500" value="5000" data-key="buyExtra" aria-labelledby="buyExtraLabel">
                   <label id="buyExtraLabel" class="sr-only" for="buyExtraNumber">Otros gastos extra de compra en euros</label>
@@ -243,7 +243,7 @@
 
             <div class="form-grid">
               <div class="field-group">
-                <label for="incomeNumber">Ingresos netos conjuntos (€/mes)</label>
+                <label for="incomeNumber">Ingresos netos conjuntos (€/mes) <details class="help"><summary aria-label="Información sobre ingresos netos">?</summary><div class="help-text">Usa los ingresos netos mensuales conjuntos que realmente puedes destinar a la operación. Normalmente puedes comprobarlos en las nóminas.</div></details></label>
                 <div class="control-row">
                   <input id="incomeRange" class="range-input" type="range" min="2000" max="10000" step="100" value="4600" data-key="income" aria-labelledby="incomeLabel">
                   <label id="incomeLabel" class="sr-only" for="incomeNumber">Ingresos netos conjuntos al mes</label>
@@ -263,7 +263,7 @@
               </div>
 
               <div class="field-group">
-                <label for="yearsNumber">Plazo hipoteca (años)</label>
+                <label for="yearsNumber">Plazo hipoteca (años) <details class="help"><summary aria-label="Información sobre plazo de la hipoteca">?</summary><div class="help-text">Es el número de años previstos para devolver la nueva hipoteca. El modelo lo utiliza para transformar el límite de cuota en un capital máximo y calcular la cuota estimada.</div></details></label>
                 <div class="control-row">
                   <input id="yearsRange" class="range-input" type="range" min="10" max="40" step="1" value="30" data-key="years" aria-labelledby="yearsLabel">
                   <label id="yearsLabel" class="sr-only" for="yearsNumber">Plazo de la hipoteca en años</label>
@@ -273,7 +273,7 @@
               </div>
 
               <div class="field-group">
-                <label for="rateNumber">Tipo de interés fijo (%)</label>
+                <label for="rateNumber">Tipo de interés fijo (%) <details class="help"><summary aria-label="Información sobre el tipo de interés">?</summary><div class="help-text">Es el tipo anual fijo que quieres simular para la nueva hipoteca. El modelo lo utiliza para calcular el capital financiable y la cuota mensual.</div></details></label>
                 <div class="control-row">
                   <input id="rateRange" class="range-input" type="range" min="0.5" max="6" step="0.05" value="2.4" data-key="rate" aria-labelledby="rateLabel">
                   <label id="rateLabel" class="sr-only" for="rateNumber">Tipo de interés fijo anual en porcentaje</label>
@@ -293,7 +293,7 @@
               </div>
 
               <div class="field-group">
-                <label for="savingsNumber">Ahorro extra aportado (€)</label>
+                <label for="savingsNumber">Ahorro extra aportado (€) <details class="help"><summary aria-label="Información sobre ahorro extra">?</summary><div class="help-text">Es el dinero que aportarás de tus ahorros además de lo obtenido con la venta. Cada euro de ahorro reduce la liquidez que necesitas conseguir con la venta.</div></details></label>
                 <div class="control-row">
                   <input id="savingsRange" class="range-input" type="range" min="0" max="150000" step="1000" value="0" data-key="savings" aria-labelledby="savingsLabel">
                   <label id="savingsLabel" class="sr-only" for="savingsNumber">Ahorro extra aportado en euros</label>
@@ -312,65 +312,65 @@
 
           <div id="statusBox" class="status" role="status" aria-live="polite">Calculando…</div>
 
-          <p class="result-kicker">Precio mínimo de venta</p>
+          <p class="result-kicker"><button type="button" class="metric-help">Precio mínimo de venta<span class="metric-tooltip" role="tooltip"><strong>Fórmula:</strong> busca el menor precio de venta cuya liquidez neta cubra la liquidez que falta para completar la compra. <strong>Utilidad:</strong> indica el precio de referencia de venta que necesita la operación según todos los parámetros introducidos.</span></button></p>
           <div id="res_salePrice" class="sale-price">—</div>
 
           <section class="funding-section" aria-labelledby="funding-title">
             <h3 id="funding-title" class="sr-only">Distribución de la financiación</h3>
-            <div id="fundingDonut" class="funding-donut" aria-hidden="true">
+            <div id="fundingDonut" class="funding-donut" role="img" tabindex="0" aria-label="Distribución de la financiación"><button type="button" class="donut-help" aria-label="Cómo se calcula la distribución de financiación">i<span class="metric-tooltip" role="tooltip"><strong>Fórmula:</strong> el gráfico reparte la necesidad total entre hipoteca, liquidez neta obtenida de la venta y ahorro extra aportado. <strong>Utilidad:</strong> permite ver de un vistazo de dónde sale el dinero necesario para la compra.</span></button>
               <div class="donut-center"><span id="donutTotal">0 €</span><small>total compra</small></div>
             </div>
             <div class="funding-legend" aria-label="Distribución de la financiación">
-              <div><span class="legend-dot loan"></span><span>Hipoteca</span><strong id="legendLoan">—</strong></div>
-              <div><span class="legend-dot sale"></span><span>Liquidez venta</span><strong id="legendSale">—</strong></div>
-              <div><span class="legend-dot savings"></span><span>Ahorro extra</span><strong id="legendSavings">—</strong></div>
+              <div><span class="legend-dot loan"></span><span class="metric-help metric-help-compact">Hipoteca<span class="metric-tooltip" role="tooltip"><strong>Qué representa:</strong> la parte de la necesidad total cubierta por la nueva hipoteca. <strong>Utilidad:</strong> muestra cuánto aporta la financiación bancaria al conjunto de la operación.</span></span><strong id="legendLoan">—</strong></div>
+              <div><span class="legend-dot sale"></span><span class="metric-help metric-help-compact">Liquidez venta<span class="metric-tooltip" role="tooltip"><strong>Qué representa:</strong> el dinero neto que queda de la venta después de hipoteca, gastos e impuestos modelizados. <strong>Utilidad:</strong> muestra cuánto de la compra debe salir de la vivienda que vendes.</span></span><strong id="legendSale">—</strong></div>
+              <div><span class="legend-dot savings"></span><span class="metric-help metric-help-compact">Ahorro extra<span class="metric-tooltip" role="tooltip"><strong>Qué representa:</strong> el ahorro que aportas directamente a la operación, limitado por la necesidad total en el gráfico. <strong>Utilidad:</strong> permite ver qué parte de la compra sale de tu liquidez previa.</span></span><strong id="legendSavings">—</strong></div>
             </div>
           </section>
 
           <dl class="results-list">
             <div class="result-row prominent">
-              <dt>Necesidad total compra</dt>
+              <dt><button type="button" class="metric-help">Necesidad total compra<span class="metric-tooltip" role="tooltip"><strong>Fórmula:</strong> precio objetivo + ITP + notaría/gestoría + reforma + otros gastos extra. <strong>Utilidad:</strong> es el dinero total que el modelo considera necesario para completar la compra.</span></button></dt>
               <dd id="res_totalNeeded">—</dd>
             </div>
 
             <div class="results-group">
               <div class="result-row muted">
-                <dt>Cuota hipoteca actual</dt>
+                <dt><button type="button" class="metric-help">Cuota hipoteca actual<span class="metric-tooltip" role="tooltip"><strong>Fórmula:</strong> es exactamente la cuota mensual que has introducido como hipoteca actual. <strong>Utilidad:</strong> sirve como referencia para comparar el esfuerzo mensual antes y después del cambio.</span></button></dt>
                 <dd id="res_oldQuota">—</dd>
               </div>
               <div class="result-row highlighted">
-                <dt>Nueva hipoteca (<span id="res_pctFinanced">—</span>)</dt>
+                <dt><button type="button" class="metric-help">Nueva hipoteca (<span id="res_pctFinanced">—</span>)<span class="metric-tooltip" role="tooltip"><strong>Fórmula:</strong> es el menor entre el capital máximo permitido por la cuota asumible y el límite por LTV. El porcentaje entre paréntesis es hipoteca / necesidad total de compra.</span></button></dt>
                 <dd id="res_maxMortgage">—</dd>
               </div>
               <div class="result-row">
-                <dt>Nueva cuota mensual estimada</dt>
+                <dt><button type="button" class="metric-help">Nueva cuota mensual estimada<span class="metric-tooltip" role="tooltip"><strong>Fórmula:</strong> cuota de amortización francesa para el importe de la nueva hipoteca, el tipo fijo y el plazo introducidos. <strong>Utilidad:</strong> permite comprobar cuánto pagarías cada mes con la financiación máxima del modelo.</span></button></dt>
                 <dd id="res_realNewQuota">—</dd>
               </div>
               <div class="result-row small-row">
-                <dt>Variación de cuota mensual</dt>
+                <dt><button type="button" class="metric-help">Variación de cuota mensual<span class="metric-tooltip" role="tooltip"><strong>Fórmula:</strong> nueva cuota mensual estimada − cuota hipotecaria actual. <strong>Utilidad:</strong> un valor positivo indica que la cuota simulada aumenta y uno negativo que disminuye.</span></button></dt>
                 <dd id="res_quotaDelta">—</dd>
               </div>
 
               <div class="result-row tiny-row">
-                <dt>Límite por esfuerzo (<span id="lbl_effort">30</span>%)</dt>
+                <dt><button type="button" class="metric-help">Límite por esfuerzo (<span id="lbl_effort">30</span>%)<span class="metric-tooltip" role="tooltip"><strong>Fórmula:</strong> primero se fija una cuota máxima = ingresos netos × límite de esfuerzo; después se convierte esa cuota en capital máximo según tipo y plazo. <strong>Utilidad:</strong> mide la financiación que permite tu capacidad mensual de pago.</span></button></dt>
                 <dd id="res_maxQuota">—</dd>
               </div>
               <div class="result-row tiny-row">
-                <dt>Límite por LTV (tasación)</dt>
+                <dt><button type="button" class="metric-help">Límite por LTV (tasación)<span class="metric-tooltip" role="tooltip"><strong>Fórmula:</strong> menor entre precio objetivo y tasación × LTV máximo. <strong>Utilidad:</strong> limita la hipoteca en función del valor de garantía que el modelo toma como referencia.</span></button></dt>
                 <dd id="res_maxLTV">—</dd>
               </div>
             </div>
 
             <div class="results-group">
               <div class="result-row">
-                <dt>Liquidez neta requerida</dt>
+                <dt><button type="button" class="metric-help">Liquidez neta requerida<span class="metric-tooltip" role="tooltip"><strong>Fórmula:</strong> máximo entre 0 y necesidad total − nueva hipoteca − ahorro extra. <strong>Utilidad:</strong> es el dinero que todavía necesitas obtener de la venta para completar la operación.</span></button></dt>
                 <dd id="res_reqLiquidity">—</dd>
               </div>
               <div class="subresults">
-                <div class="result-row tiny-row"><dt>Cancelación hipoteca</dt><dd id="res_pendMortgage">—</dd></div>
-                <div class="result-row tiny-row"><dt>Gastos, comisiones e inmobiliaria</dt><dd id="res_fees">—</dd></div>
-                <div class="result-row tiny-row"><dt>Plusvalía municipal (<span id="res_plusvaliaMethod">—</span>)</dt><dd id="res_plusvalia">—</dd></div>
-                <div class="result-row tiny-row" id="row_irpf"><dt>IRPF (ganancia estimada)</dt><dd id="res_irpf">—</dd></div>
+                <div class="result-row tiny-row"><dt><button type="button" class="metric-help">Cancelación hipoteca<span class="metric-tooltip" role="tooltip"><strong>Fórmula:</strong> capital pendiente que se descuenta de la venta. <strong>Utilidad:</strong> muestra cuánto del precio de venta debe destinarse a cancelar el préstamo actual.</span></button></dt><dd id="res_pendMortgage">—</dd></div>
+                <div class="result-row tiny-row"><dt><button type="button" class="metric-help">Gastos, comisiones e inmobiliaria<span class="metric-tooltip" role="tooltip"><strong>Fórmula:</strong> gastos de cancelación + comisión de cancelación + comisión inmobiliaria. <strong>Utilidad:</strong> refleja los costes de venta que reducen la liquidez obtenida.</span></button></dt><dd id="res_fees">—</dd></div>
+                <div class="result-row tiny-row"><dt><button type="button" class="metric-help">Plusvalía municipal (<span id="res_plusvaliaMethod">—</span>)<span class="metric-tooltip" role="tooltip"><strong>Fórmula:</strong> si hay ganancia, el modelo compara una base calculada por el método real y otra por el método objetivo y aplica el menor resultado × tipo municipal. <strong>Utilidad:</strong> estima el impuesto municipal que resta liquidez de la venta.</span></button></dt><dd id="res_plusvalia">—</dd></div>
+                <div class="result-row tiny-row" id="row_irpf"><dt><button type="button" class="metric-help">IRPF (ganancia estimada)<span class="metric-tooltip" role="tooltip"><strong>Fórmula:</strong> el modelo parte de la ganancia estimada de la venta, resta la plusvalía municipal y aplica los tramos de IRPF definidos en el código. <strong>Utilidad:</strong> estima el impuesto sobre la ganancia que reduce la liquidez neta cuando no está activado el supuesto de exención.</span></button></dt><dd id="res_irpf">—</dd></div>
               </div>
             </div>
           </dl>
