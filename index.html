@@ -1,0 +1,387 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#111827">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; form-action 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'none'">
+  <title>Panel Financiero: Operación Simultánea Inmobiliaria</title>
+  <link rel="stylesheet" href="./styles.css">
+  <script src="./app.js" defer></script>
+</head>
+<body>
+  <div class="page-shell">
+    <header class="page-header">
+      <h1>Dashboard interactivo de cambio de vivienda</h1>
+      <p>
+        Simulación financiera de una operación de venta y compra simultáneas, con amortización francesa,
+        límite de esfuerzo, LTV y estimación fiscal orientativa.
+      </p>
+    </header>
+
+    <main class="layout">
+      <section aria-labelledby="controls-title">
+        <h2 id="controls-title" class="sr-only">Parámetros de la operación</h2>
+
+        <form id="calculatorForm" novalidate>
+          <section class="card" aria-labelledby="sale-section-title">
+            <h2 id="sale-section-title" class="card-title">
+              <svg class="section-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+              </svg>
+              Venta: inmueble actual
+            </h2>
+
+            <div class="form-grid">
+              <div class="field-group">
+                <label for="oldQuotaNumber">Cuota hipoteca actual (€/mes)</label>
+                <div class="control-row">
+                  <input id="oldQuotaRange" class="range-input" type="range" min="0" max="3000" step="10" value="890" data-key="oldQuota" aria-labelledby="oldQuotaLabel">
+                  <label id="oldQuotaLabel" class="sr-only" for="oldQuotaNumber">Cuota hipoteca actual en euros al mes</label>
+                  <input id="oldQuotaNumber" class="number-input" type="number" min="0" max="3000" step="10" value="890" data-key="oldQuota" inputmode="decimal">
+                </div>
+                <p class="field-error" id="oldQuotaError" role="alert"></p>
+              </div>
+
+              <div class="field-group">
+                <label for="origPriceNumber">Precio compra original (€)</label>
+                <div class="control-row">
+                  <input id="origPriceRange" class="range-input" type="range" min="100000" max="500000" step="1000" value="270000" data-key="origPrice" aria-labelledby="origPriceLabel">
+                  <label id="origPriceLabel" class="sr-only" for="origPriceNumber">Precio de compra original en euros</label>
+                  <input id="origPriceNumber" class="number-input" type="number" min="100000" max="500000" step="1000" value="270000" data-key="origPrice" inputmode="decimal">
+                </div>
+                <p class="field-error" id="origPriceError" role="alert"></p>
+              </div>
+
+              <div class="field-group">
+                <label for="pendMortgageNumber">Hipoteca pendiente (€)</label>
+                <div class="control-row">
+                  <input id="pendMortgageRange" class="range-input" type="range" min="0" max="400000" step="1000" value="240000" data-key="pendMortgage" aria-labelledby="pendMortgageLabel">
+                  <label id="pendMortgageLabel" class="sr-only" for="pendMortgageNumber">Hipoteca pendiente en euros</label>
+                  <input id="pendMortgageNumber" class="number-input" type="number" min="0" max="400000" step="1000" value="240000" data-key="pendMortgage" inputmode="decimal">
+                </div>
+                <p class="field-error" id="pendMortgageError" role="alert"></p>
+              </div>
+
+              <div class="field-group">
+                <label for="cancelCostNumber">Gastos notaría cancelación (€) <details class="help"><summary aria-label="Información sobre gastos de cancelación">?</summary><div class="help-text">Costes de la notaría y del registro asociados a la cancelación de la hipoteca. Sustituye el importe por tu presupuesto real.</div></details></label>
+                <div class="control-row">
+                  <input id="cancelCostRange" class="range-input" type="range" min="0" max="5000" step="100" value="1000" data-key="cancelCost" aria-labelledby="cancelCostLabel">
+                  <label id="cancelCostLabel" class="sr-only" for="cancelCostNumber">Gastos de notaría y registro por cancelación en euros</label>
+                  <input id="cancelCostNumber" class="number-input" type="number" min="0" max="5000" step="100" value="1000" data-key="cancelCost" inputmode="decimal">
+                </div>
+                <p class="field-error" id="cancelCostError" role="alert"></p>
+              </div>
+
+              <div class="field-group">
+                <label for="agencyFeeNumber">Comisión inmobiliaria (%)</label>
+                <div class="control-row">
+                  <input id="agencyFeeRange" class="range-input" type="range" min="0" max="10" step="0.1" value="0" data-key="agencyFee" aria-labelledby="agencyFeeLabel">
+                  <label id="agencyFeeLabel" class="sr-only" for="agencyFeeNumber">Comisión inmobiliaria en porcentaje</label>
+                  <input id="agencyFeeNumber" class="number-input" type="number" min="0" max="10" step="0.1" value="0" data-key="agencyFee" inputmode="decimal">
+                </div>
+                <p class="field-error" id="agencyFeeError" role="alert"></p>
+              </div>
+
+              <div class="field-group">
+                <label for="cancelCommNumber">Comisión cancelación hipoteca (%) <details class="help"><summary aria-label="Información sobre comisión de cancelación">?</summary><div class="help-text">Penalización o compensación prevista en tu contrato hipotecario por cancelación anticipada. Introduce la que realmente corresponda.</div></details></label>
+                <div class="control-row">
+                  <input id="cancelCommRange" class="range-input" type="range" min="0" max="3" step="0.1" value="0" data-key="cancelComm" aria-labelledby="cancelCommLabel">
+                  <label id="cancelCommLabel" class="sr-only" for="cancelCommNumber">Comisión de cancelación hipotecaria en porcentaje</label>
+                  <input id="cancelCommNumber" class="number-input" type="number" min="0" max="3" step="0.1" value="0" data-key="cancelComm" inputmode="decimal">
+                </div>
+                <p class="field-error" id="cancelCommError" role="alert"></p>
+              </div>
+            </div>
+          </section>
+
+          <section class="card" aria-labelledby="tax-section-title">
+            <h2 id="tax-section-title" class="card-title">
+              <svg class="section-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 14l6-6m-5.5.5h.01m4.99 5h.01M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16l3.5-2 3.5 2 3.5 2 3.5-2 3.5 2zM10 8.5a.5.5 0 11-1 0 .5.5 0 011 0z"/>
+              </svg>
+              Fiscalidad (plusvalía municipal e IRPF)
+            </h2>
+
+            <div class="notice">
+              <div>
+                <p class="notice-title">Supuesto de exención de IRPF por reinversión</p>
+                <p class="notice-copy">Marcado = no se incorpora IRPF al modelo. La herramienta no verifica por sí sola la elegibilidad ni calcula una exención parcial.</p>
+              </div>
+              <label class="switch" for="irpfToggle">
+                <input id="irpfToggle" type="checkbox" checked aria-describedby="irpfToggleHelp">
+                <span class="switch-track" aria-hidden="true"><span class="switch-thumb"></span></span>
+                <span class="sr-only">No calcular IRPF por supuesto de exención</span>
+              </label>
+            </div>
+            <p id="irpfToggleHelp" class="sr-only">La exención por reinversión depende de requisitos legales y puede ser parcial.</p>
+
+            <div class="form-grid">
+              <div class="field-group">
+                <label for="yearsOwnedNumber">Años en propiedad (tenencia) <details class="help"><summary aria-label="Información sobre años de tenencia">?</summary><div class="help-text">Se utilizan años completos transcurridos. Para el método objetivo de referencia, 20 años o más se agrupan en el último tramo.</div></details></label>
+                <div class="control-row">
+                  <input id="yearsOwnedRange" class="range-input" type="range" min="0" max="30" step="1" value="2" data-key="yearsOwned" aria-labelledby="yearsOwnedLabel">
+                  <label id="yearsOwnedLabel" class="sr-only" for="yearsOwnedNumber">Años completos de tenencia</label>
+                  <input id="yearsOwnedNumber" class="number-input" type="number" min="0" max="30" step="1" value="2" data-key="yearsOwned" inputmode="numeric">
+                </div>
+                <p class="field-help">Coeficiente estatal máximo de referencia; el municipio puede aplicar uno inferior.</p>
+                <p class="field-error" id="yearsOwnedError" role="alert"></p>
+              </div>
+
+              <div class="field-group">
+                <label for="cadastralTotalNumber">Valor catastral total (€) <details class="help"><summary aria-label="Información sobre valor catastral">?</summary><div class="help-text">Valor catastral total del inmueble. Para la plusvalía real se necesita también el porcentaje de suelo.</div></details></label>
+                <div class="control-row">
+                  <input id="cadastralTotalRange" class="range-input" type="range" min="20000" max="300000" step="10" value="90655.10" data-key="cadastralTotal" aria-labelledby="cadastralTotalLabel">
+                  <label id="cadastralTotalLabel" class="sr-only" for="cadastralTotalNumber">Valor catastral total en euros</label>
+                  <input id="cadastralTotalNumber" class="number-input" type="number" min="20000" max="300000" step="0.01" value="90655.10" data-key="cadastralTotal" inputmode="decimal">
+                </div>
+                <p class="field-error" id="cadastralTotalError" role="alert"></p>
+              </div>
+
+              <div class="field-group">
+                <label for="landPctNumber">Porcentaje de suelo (%) <details class="help"><summary aria-label="Información sobre porcentaje de suelo">?</summary><div class="help-text">Porcentaje del valor catastral total correspondiente al terreno, según los datos catastrales disponibles.</div></details></label>
+                <div class="control-row">
+                  <input id="landPctRange" class="range-input" type="range" min="10" max="90" step="0.01" value="40.58" data-key="landPct" aria-labelledby="landPctLabel">
+                  <label id="landPctLabel" class="sr-only" for="landPctNumber">Porcentaje de suelo</label>
+                  <input id="landPctNumber" class="number-input" type="number" min="10" max="90" step="0.01" value="40.58" data-key="landPct" inputmode="decimal">
+                </div>
+                <p class="field-error" id="landPctError" role="alert"></p>
+              </div>
+
+              <div class="field-group">
+                <label for="plusvaliaRateNumber">Tipo impositivo IIVTNU (%) <details class="help"><summary aria-label="Información sobre tipo impositivo municipal">?</summary><div class="help-text">Debe coincidir con la ordenanza municipal vigente en el año de la transmisión. No se presupone un tipo concreto por municipio.</div></details></label>
+                <div class="control-row">
+                  <input id="plusvaliaRateRange" class="range-input" type="range" min="0" max="30" step="0.1" value="29" data-key="plusvaliaRate" aria-labelledby="plusvaliaRateLabel">
+                  <label id="plusvaliaRateLabel" class="sr-only" for="plusvaliaRateNumber">Tipo impositivo del impuesto sobre el incremento del valor de los terrenos en porcentaje</label>
+                  <input id="plusvaliaRateNumber" class="number-input" type="number" min="0" max="30" step="0.1" value="29" data-key="plusvaliaRate" inputmode="decimal">
+                </div>
+                <p class="field-help">El valor inicial es solo un dato de ejemplo; comprueba siempre la ordenanza local.</p>
+                <p class="field-error" id="plusvaliaRateError" role="alert"></p>
+              </div>
+            </div>
+          </section>
+
+          <section class="card" aria-labelledby="purchase-section-title">
+            <h2 id="purchase-section-title" class="card-title">
+              <svg class="section-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+              </svg>
+              Nueva compra
+            </h2>
+
+            <div class="form-grid">
+              <div class="field-group">
+                <label for="buyPriceNumber">Precio objetivo (€)</label>
+                <div class="control-row">
+                  <input id="buyPriceRange" class="range-input" type="range" min="200000" max="1000000" step="5000" value="495000" data-key="buyPrice" aria-labelledby="buyPriceLabel">
+                  <label id="buyPriceLabel" class="sr-only" for="buyPriceNumber">Precio objetivo de compra en euros</label>
+                  <input id="buyPriceNumber" class="number-input" type="number" min="200000" max="1000000" step="5000" value="495000" data-key="buyPrice" inputmode="decimal">
+                </div>
+                <p class="field-error" id="buyPriceError" role="alert"></p>
+              </div>
+
+              <div class="field-group">
+                <label for="appraisalPriceNumber" class="accent-label">Valor tasación estimado (€)</label>
+                <div class="control-row">
+                  <input id="appraisalPriceRange" class="range-input" type="range" min="200000" max="1000000" step="5000" value="495000" data-key="appraisalPrice" aria-labelledby="appraisalPriceLabel">
+                  <label id="appraisalPriceLabel" class="sr-only" for="appraisalPriceNumber">Valor estimado de tasación en euros</label>
+                  <input id="appraisalPriceNumber" class="number-input accent-input" type="number" min="200000" max="1000000" step="5000" value="495000" data-key="appraisalPrice" inputmode="decimal">
+                </div>
+                <p class="field-error" id="appraisalPriceError" role="alert"></p>
+              </div>
+
+              <div class="field-group">
+                <label for="buyItpNumber">Impuesto (ITP) (%) <details class="help"><summary aria-label="Información sobre ITP">?</summary><div class="help-text">Introduce el tipo aplicable a tu operación. En una vivienda usada depende de la comunidad autónoma y de las circunstancias del adquirente y del inmueble.</div></details></label>
+                <div class="control-row">
+                  <input id="buyItpRange" class="range-input" type="range" min="0" max="12" step="0.1" value="6" data-key="buyItp" aria-labelledby="buyItpLabel">
+                  <label id="buyItpLabel" class="sr-only" for="buyItpNumber">Tipo de ITP en porcentaje</label>
+                  <input id="buyItpNumber" class="number-input" type="number" min="0" max="12" step="0.1" value="6" data-key="buyItp" inputmode="decimal">
+                </div>
+                <p class="field-error" id="buyItpError" role="alert"></p>
+              </div>
+
+              <div class="field-group">
+                <label for="buyNotaryNumber">Notaría y gestoría (%)</label>
+                <div class="control-row">
+                  <input id="buyNotaryRange" class="range-input" type="range" min="0" max="4" step="0.1" value="1.5" data-key="buyNotary" aria-labelledby="buyNotaryLabel">
+                  <label id="buyNotaryLabel" class="sr-only" for="buyNotaryNumber">Notaría y gestoría en porcentaje del precio de compra</label>
+                  <input id="buyNotaryNumber" class="number-input" type="number" min="0" max="4" step="0.1" value="1.5" data-key="buyNotary" inputmode="decimal">
+                </div>
+                <p class="field-error" id="buyNotaryError" role="alert"></p>
+              </div>
+
+              <div class="field-group">
+                <label for="buyReformNumber">Reforma (€)</label>
+                <div class="control-row">
+                  <input id="buyReformRange" class="range-input" type="range" min="0" max="150000" step="1000" value="15000" data-key="buyReform" aria-labelledby="buyReformLabel">
+                  <label id="buyReformLabel" class="sr-only" for="buyReformNumber">Coste de reforma en euros</label>
+                  <input id="buyReformNumber" class="number-input" type="number" min="0" max="150000" step="1000" value="15000" data-key="buyReform" inputmode="decimal">
+                </div>
+                <p class="field-error" id="buyReformError" role="alert"></p>
+              </div>
+
+              <div class="field-group">
+                <label for="buyExtraNumber">Otros gastos extra (€)</label>
+                <div class="control-row">
+                  <input id="buyExtraRange" class="range-input" type="range" min="0" max="20000" step="500" value="5000" data-key="buyExtra" aria-labelledby="buyExtraLabel">
+                  <label id="buyExtraLabel" class="sr-only" for="buyExtraNumber">Otros gastos extra de compra en euros</label>
+                  <input id="buyExtraNumber" class="number-input" type="number" min="0" max="20000" step="500" value="5000" data-key="buyExtra" inputmode="decimal">
+                </div>
+                <p class="field-error" id="buyExtraError" role="alert"></p>
+              </div>
+            </div>
+          </section>
+
+          <section class="card" aria-labelledby="profile-section-title">
+            <h2 id="profile-section-title" class="card-title">
+              <svg class="section-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0-8c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+              Perfil financiero
+            </h2>
+
+            <div class="form-grid">
+              <div class="field-group">
+                <label for="incomeNumber">Ingresos netos conjuntos (€/mes)</label>
+                <div class="control-row">
+                  <input id="incomeRange" class="range-input" type="range" min="2000" max="10000" step="100" value="4600" data-key="income" aria-labelledby="incomeLabel">
+                  <label id="incomeLabel" class="sr-only" for="incomeNumber">Ingresos netos conjuntos al mes</label>
+                  <input id="incomeNumber" class="number-input" type="number" min="2000" max="10000" step="100" value="4600" data-key="income" inputmode="decimal">
+                </div>
+                <p class="field-error" id="incomeError" role="alert"></p>
+              </div>
+
+              <div class="field-group">
+                <label for="effortNumber">Límite de esfuerzo (%) <details class="help"><summary aria-label="Información sobre límite de esfuerzo">?</summary><div class="help-text">Porcentaje de ingresos netos que el modelo permite destinar a la nueva cuota. Es una hipótesis de cálculo, no una promesa de concesión bancaria.</div></details></label>
+                <div class="control-row">
+                  <input id="effortRange" class="range-input" type="range" min="10" max="50" step="1" value="30" data-key="effort" aria-labelledby="effortLabel">
+                  <label id="effortLabel" class="sr-only" for="effortNumber">Límite de esfuerzo en porcentaje</label>
+                  <input id="effortNumber" class="number-input" type="number" min="10" max="50" step="1" value="30" data-key="effort" inputmode="numeric">
+                </div>
+                <p class="field-error" id="effortError" role="alert"></p>
+              </div>
+
+              <div class="field-group">
+                <label for="yearsNumber">Plazo hipoteca (años)</label>
+                <div class="control-row">
+                  <input id="yearsRange" class="range-input" type="range" min="10" max="40" step="1" value="30" data-key="years" aria-labelledby="yearsLabel">
+                  <label id="yearsLabel" class="sr-only" for="yearsNumber">Plazo de la hipoteca en años</label>
+                  <input id="yearsNumber" class="number-input" type="number" min="10" max="40" step="1" value="30" data-key="years" inputmode="numeric">
+                </div>
+                <p class="field-error" id="yearsError" role="alert"></p>
+              </div>
+
+              <div class="field-group">
+                <label for="rateNumber">Tipo de interés fijo (%)</label>
+                <div class="control-row">
+                  <input id="rateRange" class="range-input" type="range" min="0.5" max="6" step="0.05" value="2.4" data-key="rate" aria-labelledby="rateLabel">
+                  <label id="rateLabel" class="sr-only" for="rateNumber">Tipo de interés fijo anual en porcentaje</label>
+                  <input id="rateNumber" class="number-input" type="number" min="0.5" max="6" step="0.05" value="2.4" data-key="rate" inputmode="decimal">
+                </div>
+                <p class="field-error" id="rateError" role="alert"></p>
+              </div>
+
+              <div class="field-group">
+                <label for="maxLTVNumber">LTV máximo permitido (%) <details class="help"><summary aria-label="Información sobre LTV">?</summary><div class="help-text">Porcentaje máximo de financiación respecto al valor que el modelo considera garantía. El banco puede aplicar criterios adicionales.</div></details></label>
+                <div class="control-row">
+                  <input id="maxLTVRange" class="range-input" type="range" min="50" max="100" step="1" value="90" data-key="maxLTV" aria-labelledby="maxLTVLabel">
+                  <label id="maxLTVLabel" class="sr-only" for="maxLTVNumber">LTV máximo permitido</label>
+                  <input id="maxLTVNumber" class="number-input" type="number" min="50" max="100" step="1" value="90" data-key="maxLTV" inputmode="numeric">
+                </div>
+                <p class="field-error" id="maxLTVError" role="alert"></p>
+              </div>
+
+              <div class="field-group">
+                <label for="savingsNumber">Ahorro extra aportado (€)</label>
+                <div class="control-row">
+                  <input id="savingsRange" class="range-input" type="range" min="0" max="150000" step="1000" value="0" data-key="savings" aria-labelledby="savingsLabel">
+                  <label id="savingsLabel" class="sr-only" for="savingsNumber">Ahorro extra aportado en euros</label>
+                  <input id="savingsNumber" class="number-input" type="number" min="0" max="150000" step="1000" value="0" data-key="savings" inputmode="decimal">
+                </div>
+                <p class="field-error" id="savingsError" role="alert"></p>
+              </div>
+            </div>
+          </section>
+        </form>
+      </section>
+
+      <aside aria-labelledby="results-title">
+        <div class="results-card">
+          <h2 id="results-title" class="sr-only">Resultados de la simulación</h2>
+
+          <div id="statusBox" class="status" role="status" aria-live="polite">Calculando…</div>
+
+          <p class="result-kicker">Precio mínimo de venta</p>
+          <div id="res_salePrice" class="sale-price">—</div>
+
+          <section class="funding-section" aria-labelledby="funding-title">
+            <h3 id="funding-title" class="sr-only">Distribución de la financiación</h3>
+            <div id="fundingDonut" class="funding-donut" aria-hidden="true">
+              <div class="donut-center"><span id="donutTotal">0 €</span><small>total compra</small></div>
+            </div>
+            <div class="funding-legend" aria-label="Distribución de la financiación">
+              <div><span class="legend-dot loan"></span><span>Hipoteca</span><strong id="legendLoan">—</strong></div>
+              <div><span class="legend-dot sale"></span><span>Liquidez venta</span><strong id="legendSale">—</strong></div>
+              <div><span class="legend-dot savings"></span><span>Ahorro extra</span><strong id="legendSavings">—</strong></div>
+            </div>
+          </section>
+
+          <dl class="results-list">
+            <div class="result-row prominent">
+              <dt>Necesidad total compra</dt>
+              <dd id="res_totalNeeded">—</dd>
+            </div>
+
+            <div class="results-group">
+              <div class="result-row muted">
+                <dt>Cuota hipoteca actual</dt>
+                <dd id="res_oldQuota">—</dd>
+              </div>
+              <div class="result-row highlighted">
+                <dt>Nueva hipoteca (<span id="res_pctFinanced">—</span>)</dt>
+                <dd id="res_maxMortgage">—</dd>
+              </div>
+              <div class="result-row">
+                <dt>Nueva cuota mensual estimada</dt>
+                <dd id="res_realNewQuota">—</dd>
+              </div>
+              <div class="result-row small-row">
+                <dt>Variación de cuota mensual</dt>
+                <dd id="res_quotaDelta">—</dd>
+              </div>
+
+              <div class="result-row tiny-row">
+                <dt>Límite por esfuerzo (<span id="lbl_effort">30</span>%)</dt>
+                <dd id="res_maxQuota">—</dd>
+              </div>
+              <div class="result-row tiny-row">
+                <dt>Límite por LTV (tasación)</dt>
+                <dd id="res_maxLTV">—</dd>
+              </div>
+            </div>
+
+            <div class="results-group">
+              <div class="result-row">
+                <dt>Liquidez neta requerida</dt>
+                <dd id="res_reqLiquidity">—</dd>
+              </div>
+              <div class="subresults">
+                <div class="result-row tiny-row"><dt>Cancelación hipoteca</dt><dd id="res_pendMortgage">—</dd></div>
+                <div class="result-row tiny-row"><dt>Gastos, comisiones e inmobiliaria</dt><dd id="res_fees">—</dd></div>
+                <div class="result-row tiny-row"><dt>Plusvalía municipal (<span id="res_plusvaliaMethod">—</span>)</dt><dd id="res_plusvalia">—</dd></div>
+                <div class="result-row tiny-row" id="row_irpf"><dt>IRPF (ganancia estimada)</dt><dd id="res_irpf">—</dd></div>
+              </div>
+            </div>
+          </dl>
+
+          <p class="disclaimer">
+            El resultado es una simulación. La fiscalidad depende de la normativa estatal y de la ordenanza municipal vigente,
+            y la financiación bancaria depende de criterios adicionales no modelizados aquí.
+          </p>
+        </div>
+      </aside>
+    </main>
+  </div>
+</body>
+</html>
