@@ -14,9 +14,12 @@ const PLUSVALIA_COEFFICIENTS = [
 ];
 
 const FIELD_RULES = {
-  oldQuota: { min: 0, max: 3000, step: 10 },
+  oldPrincipal: { min: 50000, max: 500000, step: 1000 },
   origPrice: { min: 100000, max: 500000, step: 1000 },
-  pendMortgage: { min: 0, max: 400000, step: 1000 },
+  oldInitialYears: { min: 5, max: 40, step: 1 },
+  oldRemainingYears: { min: 0, max: 40, step: 1 },
+  oldRemainingMonths: { min: 0, max: 11, step: 1 },
+  oldRate: { min: 0, max: 6, step: 0.05 },
   cancelCost: { min: 0, max: 5000, step: 100 },
   agencyFee: { min: 0, max: 10, step: 0.1 },
   cancelComm: { min: 0, max: 3, step: 0.1 },
@@ -53,6 +56,8 @@ const elements = {
   pctFinanced: document.getElementById('res_pctFinanced'),
   reqLiquidity: document.getElementById('res_reqLiquidity'),
   pendMortgage: document.getElementById('res_pendMortgage'),
+  oldMortgageBalance: document.getElementById('oldMortgageBalance'),
+  oldQuotaComputed: document.getElementById('oldQuotaComputed'),
   fees: document.getElementById('res_fees'),
   plusvalia: document.getElementById('res_plusvalia'),
   plusvaliaMethod: document.getElementById('res_plusvaliaMethod'),
@@ -140,6 +145,28 @@ function getState() {
     showFieldError(key);
   }
 
+  const initialMonths = (state.oldInitialYears ?? 0) * 12;
+  const remainingMonths = (state.oldRemainingYears ?? 0) * 12 + (state.oldRemainingMonths ?? 0);
+
+  if (errors.length === 0 && (remainingMonths <= 0 || remainingMonths > initialMonths)) {
+    const message = 'El plazo restante debe ser mayor que 0 y no superar el plazo inicial.';
+    showFieldError('oldRemainingYears', message);
+    errors.push('oldRemainingYears');
+  } else if (errors.length === 0) {
+    showFieldError('oldRemainingYears');
+  }
+
+  if (errors.length === 0) {
+    const mortgage = calculateCurrentMortgage(
+      state.oldPrincipal,
+      state.oldRate,
+      initialMonths,
+      remainingMonths,
+    );
+    state.pendMortgage = mortgage.balance;
+    state.oldQuota = mortgage.payment;
+  }
+
   return { state, valid: errors.length === 0, errors };
 }
 
@@ -155,6 +182,33 @@ function calculatePrincipalFromPayment(payment, annualRatePercent, months) {
   const monthlyRate = (annualRatePercent / 100) / 12;
   if (monthlyRate === 0) return payment * months;
   return payment * (1 - Math.pow(1 + monthlyRate, -months)) / monthlyRate;
+}
+
+function calculateCurrentMortgage(principal, annualRatePercent, initialMonths, remainingMonths) {
+  if (principal <= 0 || initialMonths <= 0 || remainingMonths <= 0 || remainingMonths > initialMonths) {
+    return { balance: 0, payment: 0 };
+  }
+
+  const monthlyRate = (annualRatePercent / 100) / 12;
+  const elapsedMonths = initialMonths - remainingMonths;
+
+  if (monthlyRate === 0) {
+    const payment = principal / initialMonths;
+    const balance = principal - (payment * elapsedMonths);
+    return {
+      balance: Math.max(0, Math.min(principal, balance)),
+      payment,
+    };
+  }
+
+  const payment = calculateMonthlyPayment(principal, annualRatePercent, initialMonths);
+  const growth = Math.pow(1 + monthlyRate, elapsedMonths);
+  const balance = principal * growth - payment * ((growth - 1) / monthlyRate);
+
+  return {
+    balance: Math.max(0, Math.min(principal, balance)),
+    payment: calculateMonthlyPayment(balance, annualRatePercent, remainingMonths),
+  };
 }
 
 function calculateIRPF(gain) {
@@ -298,6 +352,7 @@ function render(state) {
   const sale = findMinimumSalePrice(requiredLiquidity, state);
 
   const delta = realNewQuota - state.oldQuota;
+  const newQuotaEffort = state.income > 0 ? (realNewQuota / state.income * 100) : 0;
   elements.effortLabel.textContent = String(state.effort);
 
   elements.totalNeeded.textContent = formatCurrency(totalNeeded);
@@ -307,8 +362,10 @@ function render(state) {
   elements.pctFinanced.textContent = `${totalNeeded > 0 ? (maxMortgage / totalNeeded * 100).toFixed(1) : '0.0'}%`;
   elements.reqLiquidity.textContent = formatCurrency(requiredLiquidity);
   elements.pendMortgage.textContent = `-${formatCurrency(state.pendMortgage)}`;
+  elements.oldMortgageBalance.textContent = formatCurrency(state.pendMortgage).replace('€', '').trim();
+  elements.oldQuotaComputed.textContent = formatCurrency(state.oldQuota).replace('€', '').trim();
   elements.oldQuota.textContent = `${formatCurrency(state.oldQuota)}/mes`;
-  elements.realNewQuota.textContent = `${formatCurrency(realNewQuota)}/mes`;
+  elements.realNewQuota.textContent = `${formatCurrency(realNewQuota)}/mes (${newQuotaEffort.toFixed(1).replace('.', ',')}%)`;
   elements.quotaDelta.textContent = `${delta > 0 ? '+' : ''}${formatCurrency(delta)}/mes`;
   elements.quotaDelta.className = ` ${delta > 0 ? 'negative' : 'positive'}`.trim();
 
@@ -356,6 +413,8 @@ function clearResults() {
     'pctFinanced', 'reqLiquidity', 'pendMortgage', 'fees', 'plusvalia', 'plusvaliaMethod', 'irpf',
   ];
   for (const key of outputIds) elements[key].textContent = '—';
+  elements.oldMortgageBalance.textContent = '—';
+  elements.oldQuotaComputed.textContent = '—';
   elements.salePrice.textContent = '—';
   elements.quotaDelta.textContent = '—';
   elements.quotaDelta.className = '';
